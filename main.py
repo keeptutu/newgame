@@ -12,6 +12,7 @@ big_bg_filename = 'image/背景.png'
 mouse_filename = 'image/mouse.png'
 player_show_filename = 'image/人物头像框.png'
 player_info_left_filename = 'image/数据框向右.png'
+player_info_right_filename = 'image/数据框向左.png'
 big_block_filename = 'image/四角块.png'
 top_light_blue_filename = 'image/上边浅蓝色.png'
 top_pink_filename = 'image/上边粉.png'
@@ -39,6 +40,7 @@ big_bg = pygame.image.load(big_bg_filename).convert()  # 预载背景大图
 mouse_icon = pygame.image.load(mouse_filename).convert_alpha()  # 预载鼠标贴图
 player_show = pygame.image.load(player_show_filename).convert_alpha()  # 预载人物头像框
 player_info_left = pygame.image.load(player_info_left_filename).convert_alpha()  # 预载左侧人物信息框
+player_info_right = pygame.image.load(player_info_right_filename).convert_alpha()  # 预载右侧人物信息框
 big_block = pygame.image.load(big_block_filename).convert_alpha()  # 预载四角大方块 _alpha设置透明
 top_lightblue_block = pygame.image.load(top_light_blue_filename).convert_alpha()  # 预载上方浅蓝色方块 透明
 top_pink_block = pygame.image.load(top_pink_filename).convert_alpha()  # 预载上方粉色块 透明
@@ -54,7 +56,7 @@ left_pink_block = pygame.image.load(left_pink_filename).convert_alpha()  # 预�
 left_lightblue_block = pygame.image.load(left_light_blue_filename).convert_alpha()  # 预载左侧淡蓝色块
 
 # 文字
-test1 = make_words(pygame,"nihao",33)
+test1 = make_words(pygame,"太吾村",28)
 
 
 # 游戏主循环 (用于刷新屏幕)
@@ -70,6 +72,11 @@ while 1:
     screen.blit(player_show, (8, 8))  # 绘制左上角人物头像框
     screen.blit(player_info_left, (8, 182))  # 绘制左上角人物信息框
     screen.blit(player_show, (8, 688))  # 绘制左下角人物头像框
+    screen.blit(player_info_left, (8, 577))  # 绘制左下角人物信息框
+    screen.blit(player_show, (1454, 8))  # 绘制右上人物头像框
+    screen.blit(player_info_right, (1376, 182))  # 绘制右上人物信息框
+    screen.blit(player_show, (1454, 688))  # 绘制右下人物头像框
+    screen.blit(player_info_right, (1370, 578))
     screen.blit(big_block, (262, 0))  # 显示0处大方块 定义左上角第一块为0号 编号顺时针依次递增1
     block_rect1 = pygame.Rect((262, 0), (174, 174))  # 为1号方块创建rect对象
     screen.blit(top_lightblue_block, (438, 0))  # 显示1处方块
@@ -101,7 +108,7 @@ while 1:
     screen.blit(left_lightblue_block, (262, 174))  # 显示27处块
 
     pygame.mouse.set_visible(False)  # 关闭原始鼠标贴图
-    screen.blit(test1, (440, 94))
+    screen.blit(test1, (444, 94))  # 显示1号block名称
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
     if block_rect1.collidepoint(x,y):
         print(1)
