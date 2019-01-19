@@ -3,6 +3,12 @@ from mysprite import *
 from pygame.locals import *
 from sys import *
 from words import *
+import threading
+import time
+
+
+
+
 '''
 
 '''
@@ -145,8 +151,6 @@ while 1:
     block_rect26 = pygame.Rect((262, 276), (140, 100))  # 为26号块创建rect对象
     screen.blit(left_lightblue_block, (262, 174))  # 显示27处块
     block_rect27 = pygame.Rect((262, 174), (140, 100))  # 为27号块创建rect对象
-    group.draw(screen)
-
     pygame.mouse.set_visible(False)  # 关闭原始鼠标贴图
     screen.blit(test1, (444, 94))  # 显示1号block名称
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
@@ -155,4 +159,3 @@ while 1:
         exec('if block_rect'+str(i)+'.collidepoint(x,y):print(i)')
 
     pygame.display.update()  # 屏幕刷新 使画面更新
-

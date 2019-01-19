@@ -6,8 +6,9 @@ dice_file_name = 'image/两排128.png'
 
 
 class Mysprite(pygame.sprite.Sprite):
-    def __init__(self,target):
+    def __init__(self, pos):
         pygame.sprite.Sprite.__init__(self)
+        self.pos = pos
         self.master_image = None
         self.frame = 0
         self.old_frame = -1
@@ -46,7 +47,7 @@ class Mysprite(pygame.sprite.Sprite):
         self.master_image = pygame.image.load(filename).convert_alpha()
         self.frame_width = width
         self.frame_height = height
-        self.rect = Rect(0, 0, width, height)
+        self.rect = Rect(self.pos, (width, height))
         self.columns = columns
 
         rect = self.master_image.get_rect()
@@ -66,8 +67,3 @@ class Mysprite(pygame.sprite.Sprite):
             self.image = self.master_image.subsurface(rect)
             self.old_frame = self.frame
 
-    def __str__(self):
-        return str(self.frame) + ',' + str(self.first_frame) + \
-                ',' + str(self.last_frame) + ',' + str(self.frame_width) + \
-                ',' + str(self.frame_height) + ',' + str(self.columns) + \
-                ',' + str(self.rect)
