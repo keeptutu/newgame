@@ -3,9 +3,14 @@ from mysprite import *
 from pygame.locals import *
 from sys import *
 from words import *
+import threading
+import time
 '''
 
 '''
+
+
+
 
 # 文件名导入
 title_icon_filename = 'image/titles.ico'

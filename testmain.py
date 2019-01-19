@@ -7,6 +7,29 @@ import threading
 import time
 
 
+def toutou():
+    # if time.clock() < 3:
+    group.draw(screen)
+    time.sleep(5)
+
+    for event in pygame.event.get():  # pygame模块自带的事件捕捉
+        if event.type == QUIT:  # 发生点击右上角退出的事件
+            exit()  # 通过sys模块导入的exit退出
+        if event.type == KEYDOWN:  # 捕捉到键盘事件
+            touthread()
+
+
+def touthread():
+
+
+    t = threading.Thread(target=toutou)
+    t.start()
+
+    t.join()
+
+
+
+
 
 
 '''
@@ -72,19 +95,16 @@ dice = Mysprite((720, 225))
 dice.load('image/两排128.png', 128, 128, 3)
 group = pygame.sprite.Group()
 group.add(dice)
-
+tou = 0
+t1 = threading.Thread(target=toutou)
 # 游戏主循环 (用于刷新屏幕)
 while 1:
     framerate.tick(100)
     ticks = pygame.time.get_ticks()
-    group.update(ticks, 200)
+    group.update(ticks,60)
 
-    for event in pygame.event.get():  # pygame模块自带的事件捕捉
-        if event.type == QUIT:  # 发生点击右上角退出的事件
-            exit()  # 通过sys模块导入的exit退出
-        if event.type == KEYDOWN:  # 捕捉到键盘事件
-            if event.key == pygame.K_ESCAPE:  # 检测到按下esc键
-                exit()  # 退出
+
+
     mouse_pos = x, y = pygame.mouse.get_pos()  # 捕获鼠标的位置
     screen.blit(big_bg, (0, 0))  # (0,0)处绘制对象图片 屏幕左上角点坐标为(0,0) x取右为正 y取下为正
     screen.blit(player_show, (8, 8))  # 绘制左上角人物头像框
@@ -152,7 +172,15 @@ while 1:
     screen.blit(left_lightblue_block, (262, 174))  # 显示27处块
     block_rect27 = pygame.Rect((262, 174), (140, 100))  # 为27号块创建rect对象
     pygame.mouse.set_visible(False)  # 关闭原始鼠标贴图
+    for event in pygame.event.get():  # pygame模块自带的事件捕捉
+        if event.type == QUIT:  # 发生点击右上角退出的事件
+            exit()  # 通过sys模块导入的exit退出
+        if event.type == KEYDOWN:  # 捕捉到键盘事件
+            touthread()
+            print('xxx')
     screen.blit(test1, (444, 94))  # 显示1号block名称
+
+    touthread()
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
 
     for i in range(28):
