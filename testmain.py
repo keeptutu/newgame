@@ -207,7 +207,7 @@ while 1:
                 st = time.clock()  # 点击时开始一个计时
                 n = 1  # 将n改为1
 
-        if event.type == MOUSEBUTTONDOWN and button_no.collidepoint(x, y):
+        if event.type == MOUSEBUTTONDOWN and button_yes.collidepoint(x, y):
             print(1)
         if event.type == MOUSEBUTTONDOWN and button_no.collidepoint(x, y):
             print(2)
