@@ -59,7 +59,7 @@ class Player():
             xy = (262, 378)
         elif self.pos == 26:
             xy = (262, 276)
-        elif self.pos == 22:
+        elif self.pos == 27:
             xy = (262, 174)
 
         screen.blit(selfimg,xy)
