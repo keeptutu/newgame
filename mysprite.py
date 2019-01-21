@@ -53,7 +53,7 @@ class Mysprite(pygame.sprite.Sprite):
         rect = self.master_image.get_rect()
         self.last_frame = (rect.width // width) * (rect.height // height) -1
 
-    def update(self,current_time,rate=30):
+    def update(self,current_time,rate=200):
         if current_time > self.last_time + rate:
             self.frame += 1
             if self.frame > self.last_frame:
