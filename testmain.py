@@ -201,7 +201,7 @@ while 1:
                 exit()  # 退出
         if event.type == MOUSEBUTTONDOWN and button_toutouzi.collidepoint(x, y):  # 如果鼠标点击了投骰子按钮
             dice = random.randint(1,6)  # 通过randint获得本次投骰子投得的点数 作为本回合玩家移动的步数
-            p1.move(dice)
+
             tou = 1  # 将外部变量tou的值改为1 表示骰子显示
             if n == 0:  # 使用外部变量n
                 st = time.clock()  # 点击时开始一个计时
@@ -217,10 +217,10 @@ while 1:
 
         n = 0  # 将n改回1 返回原状态
 
-    if tou == 1 and 2 < time.clock() - st <= 5:  # 计时的2.5-5秒内 显示点数对应的骰子图
+    if tou == 1 and 2.5 < time.clock() - st <= 4:  # 计时的2.5-5秒内 显示点数对应的骰子图
         eval('screen.blit(tou' + str(dice) + ',(720,225))')  # 通过eval语句来显示不同情况下对应的骰子图
         pm = 1
-    if time.clock() - st == 5 and pm == 1:
+    if 4 < time.clock() - st < 5 and pm == 1:
         p1.move(dice)
         pm = 0
     p1.show_player(screen, testplayer)
