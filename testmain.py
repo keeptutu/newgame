@@ -92,8 +92,28 @@ testplayer = pygame.image.load(player_test_filename).convert_alpha()
 # 初始化玩家
 p1 = Player('tutu')
 
+
 # 文字
-test1 = make_words(pygame, "太吾村", 28)  # 在1号块上显示文字
+# 定义文字Surface对象旋转的函数
+def make_right_word(pygame,s,size):
+    test = make_words(pygame,s,size)
+    test = pygame.transform.rotate(test, 90)
+    return test
+
+
+test1 = make_words(pygame, "太吾村", 28)  # 在1号块上显示名称
+test2 = make_words(pygame, "暴风城", 28)  # 在2号块上显示名称
+test3 = make_words(pygame, "浣熊市", 28)  # 在3号块上显示名称
+test4 = make_words(pygame, "雷霆崖", 28)  # 在4号块上显示名称
+test5 = make_words(pygame, "斯坦索姆", 24)  # 在5号块上显示名称
+test6 = make_words(pygame, "锦绣谷", 28)  # 在6号块上显示名称
+test7 = make_words(pygame, "达拉然", 28)  # 在7号块上显示名称
+test9 = make_right_word(pygame, "艾欧尼亚", 24)  # 在9号块上显示名称
+test10 = make_right_word(pygame, "湖畔镇", 28)  # 在10号块上显示名称
+test11 = make_right_word(pygame, "闪金镇", 28)  # 在11号块上显示名称
+test12 = make_right_word(pygame, "幽暗城", 28)  # 在12号块上显示名称
+
+
 
 
 # 精灵事件
@@ -226,5 +246,17 @@ while 1:
     p1.show_player(screen, testplayer)
     pygame.mouse.set_visible(False)  # 关闭原始鼠标贴图
     screen.blit(test1, (444, 94))  # 显示1号block名称
+    screen.blit(test2, (549, 94))  # 显示2号block名称
+    screen.blit(test3, (649, 94))  # 显示3号block名称
+    screen.blit(test4, (749, 94))  # 显示4号block名称
+    screen.blit(test5, (847, 94))  # 显示5号block名称
+    screen.blit(test6, (956, 94))  # 显示6号block名称
+    screen.blit(test7, (1056, 94))  # 显示7号block名称
+    screen.blit(test9, (1187, 179))  # 显示9号block名称
+    screen.blit(test10, (1187, 283))  # 显示10号block名称
+    screen.blit(test11, (1187, 387))  # 显示10号block名称
+    screen.blit(test)
+
+
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
     pygame.display.update()  # 屏幕刷新 使画面更新
