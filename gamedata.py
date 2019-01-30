@@ -74,7 +74,7 @@ def buy(player,map):
     if map.level < 3:
         map.level += 1
     else:
-        map.level == 3
+        map.level = 3
 
 def house_level(map):
     '''根据土地等级，划分过路费'''

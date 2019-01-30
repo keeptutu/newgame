@@ -114,8 +114,6 @@ test11 = make_right_word(pygame, "闪金镇", 28)  # 在11号块上显示名称
 test12 = make_right_word(pygame, "幽暗城", 28)  # 在12号块上显示名称
 
 
-
-
 # 精灵事件
 framerate = pygame.time.Clock()  # 精灵事件计时
 dice = Mysprite((720, 225))  # 精灵的显示位置
@@ -221,7 +219,6 @@ while 1:
                 exit()  # 退出
         if event.type == MOUSEBUTTONDOWN and button_toutouzi.collidepoint(x, y):  # 如果鼠标点击了投骰子按钮
             dice = random.randint(1,6)  # 通过randint获得本次投骰子投得的点数 作为本回合玩家移动的步数
-
             tou = 1  # 将外部变量tou的值改为1 表示骰子显示
             if n == 0:  # 使用外部变量n
                 st = time.clock()  # 点击时开始一个计时
@@ -234,7 +231,6 @@ while 1:
 
     if tou == 1 and time.clock() - st <= 2.5:  # 从点击时开始计时 2.5秒内
         eval('group.draw(screen)')  # 显示骰子精灵动图
-
         n = 0  # 将n改回1 返回原状态
 
     if tou == 1 and 2.5 < time.clock() - st <= 4:  # 计时的2.5-5秒内 显示点数对应的骰子图
@@ -255,8 +251,6 @@ while 1:
     screen.blit(test9, (1187, 179))  # 显示9号block名称
     screen.blit(test10, (1187, 283))  # 显示10号block名称
     screen.blit(test11, (1187, 387))  # 显示10号block名称
-    screen.blit(test)
-
 
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
     pygame.display.update()  # 屏幕刷新 使画面更新

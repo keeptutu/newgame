@@ -1,11 +1,12 @@
-import pygame
-from mysprite import *
-from pygame.locals import *
-from sys import *
-from words import *
 import random
 import time
+import pygame
+from pygame.locals import *
+from sys import *
+from mysprite import *
+from words import *
 from toutouzi import *
+from player import *
 '''
 建立了游戏的主循环
 显示了地图块
@@ -45,6 +46,9 @@ tou6_filename = 'image/tou6.png'
 button_out_filename = 'image/按钮红.png'
 button_in_filename = 'image/按钮绿.png'
 button_tou_filename = 'image/touzi2.png'
+# 玩家
+player_test_filename = 'image/testplayer.png'
+
 pygame.init()  # 游戏初始化 让电脑硬件做好准备
 
 screen = pygame.display.set_mode((1600, 860), 0, 32)  # 创建游戏主屏幕
@@ -83,8 +87,31 @@ tou6 = pygame.image.load(tou6_filename).convert_alpha()
 button_in = pygame.image.load(button_in_filename).convert_alpha()
 button_out = pygame.image.load(button_out_filename).convert_alpha()
 button_tou = pygame.image.load(button_tou_filename).convert_alpha()
+# 玩家人物预载
+testplayer = pygame.image.load(player_test_filename).convert_alpha()
+# 初始化玩家 创建玩家实例
+p1 = Player('tutu')
+
+
 # 文字
+# 定义文字Surface对象旋转的函数
+def make_right_word(pygame,s,size):
+    test = make_words(pygame,s,size)
+    test = pygame.transform.rotate(test,90)
+    return test
+
+
 test1 = make_words(pygame, "太吾村", 28)  # 在1号块上显示文字
+test2 = make_words(pygame, "暴风城", 28)  # 在2号块上显示名称
+test3 = make_words(pygame, "浣熊市", 28)  # 在3号块上显示名称
+test4 = make_words(pygame, "雷霆崖", 28)  # 在4号块上显示名称
+test5 = make_words(pygame, "斯坦索姆", 24)  # 在5号块上显示名称
+test6 = make_words(pygame, "锦绣谷", 28)  # 在6号块上显示名称
+test7 = make_words(pygame, "达拉然", 28)  # 在7号块上显示名称
+test9 = make_right_word(pygame, "艾欧尼亚", 24)  # 在9号块上显示名称
+test10 = make_right_word(pygame, "湖畔镇", 28)  # 在10号块上显示名称
+test11 = make_right_word(pygame, "闪金镇", 28)  # 在11号块上显示名称
+test12 = make_right_word(pygame, "幽暗城", 28)  # 在12号块上显示名称
 
 
 # 精灵事件
@@ -98,6 +125,8 @@ group.add(dice)  # 在精灵组中加入dice精灵
 st = 0
 tou = 0
 n = 0
+pm = 0
+player = 'player'
 # 为按钮创建rect对象
 button_yes = pygame.Rect((515, 620), (198, 72))
 button_no = pygame.Rect((865, 620), (198, 72))
@@ -204,8 +233,14 @@ while 1:
         eval('group.draw(screen)')  # 显示骰子精灵动图
         n = 0  # 将n改回1 返回原状态
 
-    if tou == 1 and 2 < time.clock() - st <= 5:  # 计时的2.5-5秒内 显示点数对应的骰子图
+    if tou == 1 and 2.5 < time.clock() - st <= 4:  # 计时的2.5-5秒内 显示点数对应的骰子图
         eval('screen.blit(tou' + str(dice) + ',(720,225))')  # 通过eval语句来显示不同情况下对应的骰子图
+        pm = 1
+    if 4 < time.clock() - st <= 5 and pm == 1:
+        p1.move(dice)
+        pm = 0
+
+    p1.show_player(screen,testplayer)
     pygame.mouse.set_visible(False)  # 关闭原始鼠标贴图
     screen.blit(test1, (444, 94))  # 显示1号block名称
     screen.blit(mouse_icon, mouse_pos)  # 在鼠标位置显示自定义的鼠标贴图
