@@ -42,6 +42,8 @@ button_tou_filename = 'image/touzi2.png'
 # 玩家
 player_test_filename = 'image/testplayer.png'
 
+# start界面图片
+startbg = 'image/start_bg.jpg'
 
 # 创建屏幕类
 class Myscreen:
@@ -119,6 +121,9 @@ button_out = pygame.image.load(button_out_filename).convert_alpha()
 button_tou = pygame.image.load(button_tou_filename).convert_alpha()
 # 玩家人物预载
 testplayer = pygame.image.load(player_test_filename).convert_alpha()
+# start界面图像预载
+start_bg = pygame.image.load(startbg).convert_alpha()
+
 
 # 给画面添加图片元素
 # 添加背景图片
@@ -170,7 +175,12 @@ while n == 1:
         if event.type == QUIT:  # 发生点击右上角退出的事件
             n = 0
 
-    startscreen = pygame.display.set_mode((700,600))
+    startscreen = pygame.display.set_mode((500,373))
+    startscreen.blit(start_bg, (0, 0))
+    mouse.get_mouse()
+    mouse.show()
+    pygame.display.update()
+
 
 pygame.init()
 screen.sc_set()
