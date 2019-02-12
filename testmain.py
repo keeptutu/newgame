@@ -14,6 +14,19 @@ from player import *
 创建了yes和no和投骰子三个互动按钮
 为每个地图块和按钮块创建了对应的rect对象
 '''
+# 创建玩家列表
+players = ['player1','player2','player3','player4']
+player = 'player1'
+# 定义玩家列表的循环函数
+
+
+def next_player():
+    global player,players
+    if players.index(player) == 3:
+        player = players[0]
+    else:
+        player = players[players.index(player) + 1]
+    print(player)
 
 # 文件名导入
 title_icon_filename = 'image/titles.ico'
@@ -126,7 +139,7 @@ st = 0
 tou = 0
 n = 0
 pm = 0
-player = 'player1'
+
 # 为按钮创建rect对象
 button_yes = pygame.Rect((515, 620), (198, 72))
 button_no = pygame.Rect((865, 620), (198, 72))
@@ -217,9 +230,14 @@ while 1:
         if event.type == KEYDOWN:  # 捕捉到键盘事件
             if event.key == pygame.K_ESCAPE:  # 检测到按下esc键
                 exit()  # 退出
-        if event.type == MOUSEBUTTONDOWN and button_toutouzi.collidepoint(x, y):  # 如果鼠标点击了投骰子按钮
-            dice = random.randint(1,6)  # 通过randint获得本次投骰子投得的点数 作为本回合玩家移动的步数
-            tou = 1  # 将外部变量tou的值改为1 表示骰子显示
+        if event.type == MOUSEBUTTONDOWN:
+            dice = random.randint(1, 6) # 通过randint获得本次投骰子投得的点数 作为本回合玩家移动的步数
+            if button_toutouzi.collidepoint(x, y) and player == 'player1':  # 如果鼠标点击了投骰子按钮
+
+                tou = 1  # 将外部变量tou的值改为1 表示骰子显示
+            if button_yes.collidepoint(x, y):
+                next_player()
+
             if n == 0:  # 使用外部变量n
                 st = time.clock()  # 点击时开始一个计时
                 n = 1  # 将n改为1
