@@ -48,7 +48,7 @@ startbg = 'image/start_bg.jpg'
 # 创建屏幕类
 class Myscreen:
     def __init__(self):
-        self.screen = pygame.display.set_mode((1600, 860), 0, 32)
+        self.screen = pygame.display.set_mode((500, 373), 0, 32)
         self.pic_group = []
 
     def sc_add(self,pic,pos):
@@ -79,17 +79,73 @@ class Gamemouse:
         screen.screen.blit(mouse_icon, self.pos)
 
 
+# 创建选项按钮和对话框内容类(将按钮和对话框作为一个整体)
+class Button:
+    def __init__(self):
+        self.flag = 0
+
+    def newset(self):
+        self.flag = 1
+
+    def show(self):
+        if self.flag == 1:
+            screen.screen.blit(button_out, (515, 620)) # 添加yes按钮至屏幕显示列表
+            screen.screen.blit(button_out, (865, 620)) # 添加no按钮至屏幕显示按钮
+            screen.screen.blit(button_tou, (750, 600))  # 显示投骰子按钮
+
+    def disappear(self):
+        self.flag = 0
+
+
 # 创建投骰子和人物移动的相关动作类
 class Tou:
     def __init__(self):
         pass
 
+
 # 创建屏幕对象实例
 screen = Myscreen()
 # 创建鼠标对象实例
 mouse = Gamemouse()
+# 创建按钮对象实例
+button = Button()
+# 为每个方块和按钮建立rect对象
+# 为按钮创建rect对象
+button_yes = pygame.Rect((515, 620), (198, 72))
+button_no = pygame.Rect((865, 620), (198, 72))
+button_toutouzi = pygame.Rect((750, 600), (64, 64))
+# 为地图快创建rect对象
+block_rect0 = pygame.Rect((262, 0), (174, 174))  # 为0号方块创建rect对象
+block_rect1 = pygame.Rect((438, 0), (100, 140))  # 为1号方块创建rect对象
+block_rect2 = pygame.Rect((540, 0), (100, 140))  # 为2号方块创建rect对象
+block_rect3 = pygame.Rect((642, 0), (100, 140))  # 为3号方块创建rect对象
+block_rect4 = pygame.Rect((744, 0), (100, 140))  # 为4号方块创建rect对象
+block_rect5 = pygame.Rect((846, 0), (100, 140))  # 为5号方块创建rect对象
+block_rect6 = pygame.Rect((948, 0), (100, 140))  # 为6号方块创建rect对象
+block_rect7 = pygame.Rect((1050, 0), (100, 140))  # 为7号方块创建rect对象
+block_rect8 = pygame.Rect((1152, 0), (174, 174))  # 为8号方块创建rect对象
+block_rect9 = pygame.Rect((1186, 174), (140, 100))  # 为9号方块创建rect对象
+block_rect10 = pygame.Rect((1186, 276), (140, 100))  # 为10号方块创建rect对象
+block_rect11 = pygame.Rect((1186, 378), (140, 100))  # 为11号方块创建rect对象
+block_rect12 = pygame.Rect((1186, 480), (140, 100))  # 为12号方块创建rect对象
+block_rect13 = pygame.Rect((1186, 582), (140, 100))  # 为13号块创建rect对象
+block_rect14 = pygame.Rect((1152, 684), (174, 174))  # 为14号块创建rect对象
+block_rect15 = pygame.Rect((1050, 718), (100, 140))  # 为15号块创建rect对象
+block_rect16 = pygame.Rect((948, 718), (100, 140))  # 为16号块创建rect对象
+block_rect17 = pygame.Rect((846, 718), (100, 140))  # 为17号块创建rect对象
+block_rect18 = pygame.Rect((744, 718), (100, 140))  # 为18号块创建rect对象
+block_rect19 = pygame.Rect((642, 718), (100, 140))  # 为19号块创建rect对象
+block_rect20 = pygame.Rect((540, 718), (100, 140))  # 为20号块创建rect对象
+block_rect21 = pygame.Rect((438, 718), (100, 140))  # 为21号块创建rect对象
+block_rect22 = pygame.Rect((262, 684), (174, 174))  # 为22号块创建rect对象
+block_rect23 = pygame.Rect((262, 582), (140, 100))  # 为23号块创建rect对象
+block_rect24 = pygame.Rect((262, 480), (140, 100))  # 为24号块创建rect对象
+block_rect25 = pygame.Rect((262, 378), (140, 100))  # 为25号块创建rect对象
+block_rect26 = pygame.Rect((262, 276), (140, 100))  # 为26号块创建rect对象
+block_rect27 = pygame.Rect((262, 174), (140, 100))  # 为27号块创建rect对象
 
 # 游戏图片预载
+icon = pygame.image.load(title_icon_filename)
 big_bg = pygame.image.load(big_bg_filename).convert()  # 预载背景大图
 mouse_icon = pygame.image.load(mouse_filename).convert_alpha()  # 预载鼠标贴图
 player_show = pygame.image.load(player_show_filename).convert_alpha()  # 预载人物头像框
@@ -164,17 +220,21 @@ screen.sc_add(left_pink_block, (262, 480))  # 显示24处块
 screen.sc_add(left_green_block, (262, 378))  # 显示25处块
 screen.sc_add(left_green_block, (262, 276))  # 显示26处块
 screen.sc_add(left_lightblue_block, (262, 174))  # 显示27处块
-screen.sc_add(button_out, (515, 620))  # 显示yes按钮
-screen.sc_add(button_out, (865, 620))  # 显示no按钮
-screen.sc_add(button_tou, (750, 600))  # 显示投骰子按钮
+
 pygame.mouse.set_visible(False)
 n = 1
 # 建立游戏开始界面的循环
+pygame.display.set_caption('大富翁')
+pygame.display.set_icon(icon)
 while n == 1:
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
-            n = 0
-
+            exit()
+        if event.type == KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                n = 2
+            if event.key == K_d:
+                n = 3
     startscreen = pygame.display.set_mode((500,373))
     startscreen.blit(start_bg, (0, 0))
     mouse.get_mouse()
@@ -184,15 +244,43 @@ while n == 1:
 
 pygame.init()
 screen.sc_set()
-# 建立游戏主体循环
-while 1:
+
+# 建立游戏单机模式主体循环
+pygame.display.set_caption('大富翁----【单人模式】')
+while n == 2:
 
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
+        if event.type == KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                button.disappear()
+            if event.key == pygame.K_SPACE:
+                button.newset()
 
     screen.sc_show()
     mouse.get_mouse()
+    button.show()
     mouse.show()
+
     screen.sc_update()
 
+# 多人模式的游戏循环
+pygame.display.set_caption('大富翁----【多人游戏】')
+while n == 3:
+
+    for event in pygame.event.get():  # pygame模块自带的事件捕捉
+        if event.type == QUIT:  # 发生点击右上角退出的事件
+            exit()
+        if event.type == KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                button.disappear()
+            if event.key == pygame.K_SPACE:
+                button.newset()
+
+    screen.sc_show()
+    mouse.get_mouse()
+    button.show()
+    mouse.show()
+
+    screen.sc_update()
