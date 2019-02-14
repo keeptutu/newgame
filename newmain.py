@@ -45,6 +45,7 @@ player_test_filename = 'image/testplayer.png'
 # start界面图片
 startbg = 'image/start_bg.jpg'
 
+
 # 创建屏幕类
 class Myscreen:
     def __init__(self):
@@ -100,7 +101,35 @@ class Button:
 # 创建投骰子和人物移动的相关动作类
 class Tou:
     def __init__(self):
-        pass
+        self.framerate = pygame.time.Clock()
+        self.dice = Mysprite((720, 225))
+        self.dice.load('image/两排128.png', 128, 128, 3)
+        self.group = pygame.sprite.Group()
+        self.group.add(self.dice)
+        self.show_flag = 0
+        self.showend_flag = 0
+        print(1)
+
+    def setself(self):
+        self.st = time.clock()
+        self.framerate.tick(100)
+        self.ticks = pygame.time.get_ticks()
+        self.group.update(self.ticks, 150)
+
+
+
+    def show(self):
+        self.show_flag = 1
+
+    def disappear(self):
+        self.show_flag = 0
+
+    def showend(self):
+        self.showend_flag = 1
+
+    def enddisappear(self):
+        self.showend_flag = 0
+# 定义的全局函数
 
 
 # 创建屏幕对象实例
@@ -222,47 +251,87 @@ screen.sc_add(left_green_block, (262, 276))  # 显示26处块
 screen.sc_add(left_lightblue_block, (262, 174))  # 显示27处块
 
 pygame.mouse.set_visible(False)
-n = 1
+n = 0
+pygame.init()
 # 建立游戏开始界面的循环
+# 由于流程比较简单 所以用面向过程的方式来解决
 pygame.display.set_caption('大富翁')
 pygame.display.set_icon(icon)
-while n == 1:
-    for event in pygame.event.get():  # pygame模块自带的事件捕捉
-        if event.type == QUIT:  # 发生点击右上角退出的事件
-            exit()
-        if event.type == KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                n = 2
-            if event.key == K_d:
-                n = 3
+
+# 游戏开始界面的各种元素
+# 文字
+test_st1 = make_words(pygame, '单人游戏', 28)
+test_st2 = make_words(pygame, '多人游戏', 28)
+
+button_1 = pygame.Rect((150, 100), (198, 72))
+button_2 = pygame.Rect((150, 200), (198, 72))
+while n == 0:
+
     startscreen = pygame.display.set_mode((500,373))
     startscreen.blit(start_bg, (0, 0))
     mouse.get_mouse()
+    startscreen.blit(button_out, (150, 100))
+    startscreen.blit(button_out, (150, 200))
+    if button_1.collidepoint(mouse.x,mouse.y):
+        startscreen.blit(button_in, (150, 100))
+
+    if button_2.collidepoint(mouse.x,mouse.y):
+        startscreen.blit(button_in, (150, 200))
+    startscreen.blit(test_st1, (190, 115))
+    startscreen.blit(test_st2, (190, 215))
+    for event in pygame.event.get():  # pygame模块自带的事件捕捉
+        if event.type == QUIT:  # 发生点击右上角退出的事件
+            exit()
+        if event.type == K_ESCAPE:
+            exit()
+        if event.type == MOUSEBUTTONDOWN:
+            if button_1.collidepoint(mouse.x,mouse.y):
+                n = 2
+            if button_2.collidepoint(mouse.x,mouse.y):
+                n = 3
     mouse.show()
     pygame.display.update()
 
 
 pygame.init()
 screen.sc_set()
+tou = Tou()
 
 # 建立游戏单机模式主体循环
 pygame.display.set_caption('大富翁----【单人模式】')
+# 循环外部变量
+tou.show_flag = 0
 while n == 2:
-
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
+
         if event.type == KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 button.disappear()
             if event.key == pygame.K_SPACE:
                 button.newset()
+            if event.key == pygame.K_d:
+                print(0)
+                st = time.clock()
+                print(st)
+                tou.show()
+                dice = random.randint(1, 6)
+                tou.showend_flag = 1
 
+    if time.clock() - st > 5:
+        tou.disappear()
+
+    tou.setself()
     screen.sc_show()
     mouse.get_mouse()
     button.show()
-    mouse.show()
+    if tou.show_flag == 1:
+        tou.group.draw(screen.screen)
+    if tou.showend_flag == 1 and 5 < time.clock() - st < 7.5:
+        eval('screen.screen.blit(tou' + str(dice) + ',(720,225))')
 
+    mouse.show()
     screen.sc_update()
 
 # 多人模式的游戏循环
