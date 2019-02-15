@@ -1,12 +1,18 @@
 class Player():
-    def __init__(self, name):
+    def __init__(self, name,num,pp=0):
         self.name = name
         self.pos = 0
+        self.num = num
+        self.pp = pp
+
+    def buy_block(self):
+        pass
+
 
     def show_player(self, screen, selfimg):
-        xy = (262,0)
+        xy = (262, 0)
         if self.pos == 0:
-            xy = (262, 0)
+            xy = (262 + self.num*10, 0)
         elif self.pos == 1:
             xy = (438, 0)
         elif self.pos == 2:
@@ -24,31 +30,31 @@ class Player():
         elif self.pos == 8:
             xy = (1152, 0)
         elif self.pos == 9:
-            xy = (1186, 174)
+            xy = (1252, 174)
         elif self.pos == 10:
-            xy = (1186, 276)
+            xy = (1252, 276)
         elif self.pos == 11:
-            xy = (1186, 378)
+            xy = (1252, 378)
         elif self.pos == 12:
-            xy = (1186, 480)
+            xy = (1252, 480)
         elif self.pos == 13:
-            xy = (1186, 582)
+            xy = (1252, 582)
         elif self.pos == 14:
             xy = (1152, 684)
         elif self.pos == 15:
-            xy = (1050, 718)
+            xy = (1050, 764)
         elif self.pos == 16:
-            xy = (948, 718)
+            xy = (948, 764)
         elif self.pos == 17:
-            xy = (846, 718)
+            xy = (846, 764)
         elif self.pos == 18:
-            xy = (744, 718)
+            xy = (744, 764)
         elif self.pos == 19:
-            xy = (642, 718)
+            xy = (642, 764)
         elif self.pos == 20:
-            xy = (540, 718)
+            xy = (540, 764)
         elif self.pos == 21:
-            xy = (438, 718)
+            xy = (438, 764)
         elif self.pos == 22:
             xy = (262, 684)
         elif self.pos == 23:

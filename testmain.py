@@ -114,14 +114,14 @@ def make_right_word(pygame,s,size):
     return test
 
 
-test1 = make_words(pygame, "太吾村", 28)  # 在1号块上显示名称
+test1 = make_words(pygame, "埃索达", 28)  # 在1号块上显示名称
 test2 = make_words(pygame, "暴风城", 28)  # 在2号块上显示名称
-test3 = make_words(pygame, "浣熊市", 28)  # 在3号块上显示名称
+test3 = make_words(pygame, "铁炉堡", 28)  # 在3号块上显示名称
 test4 = make_words(pygame, "雷霆崖", 28)  # 在4号块上显示名称
 test5 = make_words(pygame, "斯坦索姆", 24)  # 在5号块上显示名称
 test6 = make_words(pygame, "锦绣谷", 28)  # 在6号块上显示名称
 test7 = make_words(pygame, "达拉然", 28)  # 在7号块上显示名称
-test9 = make_right_word(pygame, "艾欧尼亚", 24)  # 在9号块上显示名称
+test9 = make_right_word(pygame, "奥格瑞玛", 24)  # 在9号块上显示名称
 test10 = make_right_word(pygame, "湖畔镇", 28)  # 在10号块上显示名称
 test11 = make_right_word(pygame, "闪金镇", 28)  # 在11号块上显示名称
 test12 = make_right_word(pygame, "幽暗城", 28)  # 在12号块上显示名称

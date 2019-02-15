@@ -7,6 +7,8 @@ from mysprite import *
 from words import *
 from toutouzi import *
 from player import *
+from blockdata import *
+
 
 # 文件名导入
 title_icon_filename = 'image/titles.ico'
@@ -41,6 +43,10 @@ button_in_filename = 'image/按钮绿.png'
 button_tou_filename = 'image/touzi2.png'
 # 玩家
 player_test_filename = 'image/testplayer.png'
+p1_test_filename = 'image/p1.png'
+p2_test_filename = 'image/p2.png'
+p3_test_filename = 'image/p3.png'
+p4_test_filename = 'image/p4.png'
 
 # start界面图片
 startbg = 'image/start_bg.jpg'
@@ -116,8 +122,6 @@ class Tou:
         self.ticks = pygame.time.get_ticks()
         self.group.update(self.ticks, 150)
 
-
-
     def show(self):
         self.show_flag = 1
 
@@ -129,6 +133,65 @@ class Tou:
 
     def enddisappear(self):
         self.showend_flag = 0
+
+
+# 文字类
+class Word():
+    def __init__(self):
+        self.test1 = make_words(pygame, "埃索达", 28)  # 1号块名称
+        self.test2 = make_words(pygame, "暴风城", 28)  # 2号块名称
+        self.test3 = make_words(pygame, "铁炉堡", 28)  # 3号块名称
+        self.test4 = make_words(pygame, "雷霆崖", 28)  # 4号块名称
+        self.test5 = make_words(pygame, "斯坦索姆", 24)  # 5号块名称
+        self.test6 = make_words(pygame, "锦绣谷", 28)  # 6号块名称
+        self.test7 = make_words(pygame, "达拉然", 28)  # 7号块名称
+        self.test8 = make_words(pygame, '002', 24)
+        self.test9 = make_right_word(pygame, '湖畔镇', 28)
+        self.test10 = make_right_word(pygame, '闪金镇', 28)
+        self.test11 = make_right_word(pygame, '幽暗城', 28)
+        self.test12 = make_right_word(pygame, '银月城', 28)
+        self.test13 = make_right_word(pygame, '斯坦索姆', 24)
+        self.test14 = make_words(pygame, '塞拉摩', 28)
+        self.test15 = make_words(pygame, '祖阿曼', 28)
+        self.test16 = make_words(pygame, '加基森', 28)
+        self.test17 = make_words(pygame, '达纳苏斯', 24)
+        self.test18 = make_words(pygame, '西部荒野', 24)
+        self.test19 = make_words(pygame, '夜色镇', 28)
+        self.test20 = make_words(pygame, '辛特兰', 28)
+        self.test21 = make_words(pygame, '赤脊山', 28)
+        self.test22 = make_words(pygame, '022', 28)
+        self.test23 = make_left_word(pygame, '奥格瑞玛', 24)
+        self.test24 = make_left_word(pygame, '丹莫罗', 28)
+        self.test25 = make_left_word(pygame, '永歌森林', 24)
+        self.test26 = make_left_word(pygame, '千针石林', 24)
+        self.test27 = make_left_word(pygame, '灰  谷', 28)
+
+
+    def show(self):
+        screen.screen.blit(self.test1, (444, 94))
+        screen.screen.blit(self.test2, (549, 94))
+        screen.screen.blit(self.test3, (649, 94))
+        screen.screen.blit(self.test4, (749, 94))
+        screen.screen.blit(self.test5, (847, 94))
+        screen.screen.blit(self.test6, (956, 94))
+        screen.screen.blit(self.test7, (1056, 94))
+        screen.screen.blit(self.test9, (1187, 179))
+        screen.screen.blit(self.test10, (1187, 283))
+        screen.screen.blit(self.test11, (1187, 387))
+        screen.screen.blit(self.test12, (1187, 491))
+        screen.screen.blit(self.test13, (1187, 586))
+        screen.screen.blit(self.test15, (1056, 721))
+        screen.screen.blit(self.test16, (956, 721))
+        screen.screen.blit(self.test17, (847, 721))
+        screen.screen.blit(self.test18, (749, 721))
+        screen.screen.blit(self.test19, (649, 721))
+        screen.screen.blit(self.test20, (549, 721))
+        screen.screen.blit(self.test21, (444, 721))
+        screen.screen.blit(self.test23, (361, 177))
+        screen.screen.blit(self.test24, (361, 283))
+        screen.screen.blit(self.test25, (361, 381))
+        screen.screen.blit(self.test26, (361, 483))
+        screen.screen.blit(self.test27, (361, 591))
 # 定义的全局函数
 
 
@@ -136,6 +199,8 @@ class Tou:
 screen = Myscreen()
 # 创建鼠标对象实例
 mouse = Gamemouse()
+# 创建文字实例
+word = Word()
 # 创建按钮对象实例
 button = Button()
 # 为每个方块和按钮建立rect对象
@@ -206,6 +271,10 @@ button_out = pygame.image.load(button_out_filename).convert_alpha()
 button_tou = pygame.image.load(button_tou_filename).convert_alpha()
 # 玩家人物预载
 testplayer = pygame.image.load(player_test_filename).convert_alpha()
+p1p = pygame.image.load(p1_test_filename).convert_alpha()
+p2p = pygame.image.load(p2_test_filename).convert_alpha()
+p3p = pygame.image.load(p3_test_filename).convert_alpha()
+p4p = pygame.image.load(p4_test_filename).convert_alpha()
 # start界面图像预载
 start_bg = pygame.image.load(startbg).convert_alpha()
 
@@ -289,6 +358,7 @@ while n == 0:
                 n = 2
             if button_2.collidepoint(mouse.x,mouse.y):
                 n = 3
+
     mouse.show()
     pygame.display.update()
 
@@ -296,11 +366,14 @@ while n == 0:
 pygame.init()
 screen.sc_set()
 tou = Tou()
+# 单人游戏模式下的实例
+p1 = Player('test',0)
 
 # 建立游戏单机模式主体循环
 pygame.display.set_caption('大富翁----【单人模式】')
 # 循环外部变量
 tou.show_flag = 0
+move = 0
 while n == 2:
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
@@ -311,30 +384,39 @@ while n == 2:
                 button.disappear()
             if event.key == pygame.K_SPACE:
                 button.newset()
-            if event.key == pygame.K_d:
+        if event.type == MOUSEBUTTONDOWN and button.flag == 1:
+            if button_toutouzi.collidepoint(mouse.x,mouse.y):
                 print(0)
                 st = time.clock()
                 print(st)
                 tou.show()
                 dice = random.randint(1, 6)
                 tou.showend_flag = 1
+                move = 1
 
     if time.clock() - st > 5:
         tou.disappear()
-
+    if 6.5 < time.clock() - st and move == 1:
+        p1.move(dice)
+        move = 0
     tou.setself()
     screen.sc_show()
     mouse.get_mouse()
     button.show()
     if tou.show_flag == 1:
         tou.group.draw(screen.screen)
-    if tou.showend_flag == 1 and 5 < time.clock() - st < 7.5:
+    if tou.showend_flag == 1 and 5 < time.clock() - st < 6.5:
         eval('screen.screen.blit(tou' + str(dice) + ',(720,225))')
+    # 显示block上的文字名称
 
+    p1.show_player(screen.screen, testplayer)
+    word.show()
     mouse.show()
     screen.sc_update()
 
 # 多人模式的游戏循环
+# 创建实例
+
 pygame.display.set_caption('大富翁----【多人游戏】')
 while n == 3:
 
