@@ -1,20 +1,21 @@
 class Player():
-    def __init__(self, name,num,pp=0):
+    def __init__(self, name,num,img,pp=0):
         self.name = name
         self.pos = 0
         self.num = num
+        self.img = img
         self.pp = pp
 
     def buy_block(self):
         pass
 
 
-    def show_player(self, screen, selfimg):
+    def show_player(self, screen):
         xy = (262, 0)
         if self.pos == 0:
             xy = (262 + self.num*10, 0)
         elif self.pos == 1:
-            xy = (438, 0)
+            xy = (438+self.num*2, 0+self.num*2)
         elif self.pos == 2:
             xy = (540, 0)
         elif self.pos == 3:
@@ -68,9 +69,9 @@ class Player():
         elif self.pos == 27:
             xy = (262, 174)
 
-        screen.blit(selfimg,xy)
+        screen.blit(self.img, xy)
 
-    def move(self,n):
+    def move(self, n):
         for i in range(n):
             if self.pos > 27:
                 self.pos -= 26

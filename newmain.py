@@ -8,7 +8,7 @@ from words import *
 from toutouzi import *
 from player import *
 from blockdata import *
-
+from player_turn import *
 
 # 文件名导入
 title_icon_filename = 'image/titles.ico'
@@ -43,10 +43,16 @@ button_in_filename = 'image/按钮绿.png'
 button_tou_filename = 'image/touzi2.png'
 # 玩家
 player_test_filename = 'image/testplayer.png'
-p1_test_filename = 'image/p1.png'
-p2_test_filename = 'image/p2.png'
-p3_test_filename = 'image/p3.png'
-p4_test_filename = 'image/p4.png'
+p1_filename = 'image/p1.png'
+p2_filename = 'image/p2.png'
+p3_filename = 'image/p3.png'
+p4_filename = 'image/p4.png'
+# 玩家头像
+t1 = 'image/t01.png'
+t2 = 'image/t02.png'
+t3 = 'image/t03.png'
+t4 = 'image/t04.png'
+
 # 特殊block的贴图
 start_block_filename = 'image/start.png'
 jianyu_block_filename = 'image/jianyu.png'
@@ -253,6 +259,16 @@ class DialogBox:
         if self.showbuild == 1:
             self.showbuild = 0
 
+# 创建信息框
+class Info:
+    def __init__(self):
+        pass
+    def t_show(self):
+        screen.screen.blit(p1t, (8, 8))
+        screen.screen.blit(p2t, (8, 688))
+        screen.screen.blit(p3t, (1454, 8))
+        screen.screen.blit(p4t, (1454, 688))
+
 
 # 定义的全局函数
 # 创建屏幕对象实例
@@ -334,10 +350,16 @@ button_out = pygame.image.load(button_out_filename).convert_alpha()
 button_tou = pygame.image.load(button_tou_filename).convert_alpha()
 # 玩家人物预载
 testplayer = pygame.image.load(player_test_filename).convert_alpha()
-p1p = pygame.image.load(p1_test_filename).convert_alpha()
-p2p = pygame.image.load(p2_test_filename).convert_alpha()
-p3p = pygame.image.load(p3_test_filename).convert_alpha()
-p4p = pygame.image.load(p4_test_filename).convert_alpha()
+p1p = pygame.image.load(p1_filename).convert_alpha()
+p2p = pygame.image.load(p2_filename).convert_alpha()
+p3p = pygame.image.load(p3_filename).convert_alpha()
+p4p = pygame.image.load(p4_filename).convert_alpha()
+# 玩家人物预载
+p1t = pygame.image.load(t1).convert_alpha()
+p2t = pygame.image.load(t2).convert_alpha()
+p3t = pygame.image.load(t3).convert_alpha()
+p4t = pygame.image.load(t4).convert_alpha()
+
 # start界面图像预载
 start_bg = pygame.image.load(startbg).convert_alpha()
 # 特殊方块的贴图
@@ -418,6 +440,7 @@ while n == 0:
         startscreen.blit(button_in, (150, 200))
     startscreen.blit(test_st1, (190, 115))
     startscreen.blit(test_st2, (190, 215))
+
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
@@ -437,8 +460,25 @@ pygame.init()
 screen.sc_set()
 tou = Tou()
 # 单人游戏模式下的实例
-p1 = Player('test', 0)
-p2 = Player('test2', 2)
+p1 = Player('test', 0,p1p)
+p2 = Player('test2', 2, p2p)
+p3 = Player('test3', 4, p3p)
+p4 = Player('test4', 6, p4p)
+# 创建信息框实例
+info = Info()
+# 建立人物循环
+player = p1
+players = [p1,p2,p3,p4]
+def turn_end():
+    global player
+    if players.index(player) <= 2:
+        player = players[players.index(player) + 1]
+        return player
+    else:
+        player = players[0]
+        return player
+
+
 
 
 # 建立游戏单机模式主体循环
@@ -469,6 +509,7 @@ while n == 2:
 
         if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
             if button_toutouzi.collidepoint(mouse.x,mouse.y):
+                button.touflag = 0
                 # print(0)
                 st = time.clock()
                 # print(st)
@@ -476,11 +517,13 @@ while n == 2:
                 dice = random.randint(1, 6)
                 tou.showend_flag = 1
                 move = 1
+                turn_end()
+
 
     if time.clock() - st > 5:
         tou.disappear()
     if 6.5 < time.clock() - st and move == 1:
-        p1.move(dice)
+        player.move(dice)
         move = 0
 
 
@@ -498,9 +541,12 @@ while n == 2:
         eval('screen.screen.blit(tou' + str(dice) + ',(720,225))')
     # 显示block上的文字名称
 
-    p1.show_player(screen.screen, testplayer)
-    p2.show_player(screen.screen, testplayer)
+    p1.show_player(screen.screen)
+    p2.show_player(screen.screen)
+    p3.show_player(screen.screen)
+    p4.show_player(screen.screen)
     word.show()
+    info.t_show()
     mouse.show()
     screen.sc_update()
 
