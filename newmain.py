@@ -47,7 +47,11 @@ p1_test_filename = 'image/p1.png'
 p2_test_filename = 'image/p2.png'
 p3_test_filename = 'image/p3.png'
 p4_test_filename = 'image/p4.png'
-
+# 特殊block的贴图
+start_block_filename = 'image/start.png'
+jianyu_block_filename = 'image/jianyu.png'
+# 对话框
+forword_filename = 'image/forword.png'
 # start界面图片
 startbg = 'image/start_bg.jpg'
 
@@ -90,15 +94,38 @@ class Gamemouse:
 class Button:
     def __init__(self):
         self.flag = 0
+        self.touflag = 0
+        self.word_yes = make_words(pygame, '是', 30)
+        self.word_no = make_words(pygame, '否', 30)
+
 
     def newset(self):
         self.flag = 1
 
-    def show(self):
+
+
+    def show_button(self):
         if self.flag == 1:
-            screen.screen.blit(button_out, (515, 620)) # 添加yes按钮至屏幕显示列表
-            screen.screen.blit(button_out, (865, 620)) # 添加no按钮至屏幕显示按钮
+            if button_yes.collidepoint(mouse.x, mouse.y):
+                screen.screen.blit(button_in, (515, 620)) # 添加yes按钮至屏幕显示列表
+            else:
+                screen.screen.blit(button_out, (515, 620))
+            if button_no.collidepoint(mouse.x,mouse.y):
+                screen.screen.blit(button_in, (865, 620)) # 添加no按钮至屏幕显示按钮
+            else:
+                screen.screen.blit(button_out, (865, 620))
+
+            screen.screen.blit(self.word_yes, (595, 634))
+            screen.screen.blit(self.word_no, (945, 634))
+    def tou(self):
+        if self.touflag == 1:
             screen.screen.blit(button_tou, (750, 600))  # 显示投骰子按钮
+
+    def show_tou(self):
+        self.touflag = 1
+
+    def tou_disappear(self):
+        self.touflag = 0
 
     def disappear(self):
         self.flag = 0
@@ -114,7 +141,7 @@ class Tou:
         self.group.add(self.dice)
         self.show_flag = 0
         self.showend_flag = 0
-        print(1)
+        # print(1)
 
     def setself(self):
         self.st = time.clock()
@@ -192,9 +219,42 @@ class Word():
         screen.screen.blit(self.test25, (361, 381))
         screen.screen.blit(self.test26, (361, 483))
         screen.screen.blit(self.test27, (361, 591))
+
+
+# 创建对话框类
+class DialogBox:
+    def __init__(self):
+        self.forbuy = make_words(pygame, '是否购买当前土地?', 30)
+        self.forbuild = make_words(pygame, '是否在当前土地升级建筑?', 30)
+        self.showbuy = 0
+        self.showbuild = 0
+
+
+    def ifbuy(self):
+        if self.showbuy == 1:
+            screen.screen.blit(self.forbuy, (530, 500))
+            screen.screen.blit(forword, (500, 470))
+
+
+    def ifbuild(self):
+        if self.showbuild == 1:
+            screen.screen.blit(self.forbuild, (530, 500))
+            screen.screen.blit(forword, (500,470))
+
+    def show_buy(self):
+        self.showbuy = 1
+
+    def show_build(self):
+        self.showbuild = 1
+
+    def disappear(self):
+        if self.showbuy == 1:
+            self.showbuy = 0
+        if self.showbuild == 1:
+            self.showbuild = 0
+
+
 # 定义的全局函数
-
-
 # 创建屏幕对象实例
 screen = Myscreen()
 # 创建鼠标对象实例
@@ -203,6 +263,9 @@ mouse = Gamemouse()
 word = Word()
 # 创建按钮对象实例
 button = Button()
+# 创建对话框实例
+dialogbox = DialogBox()
+
 # 为每个方块和按钮建立rect对象
 # 为按钮创建rect对象
 button_yes = pygame.Rect((515, 620), (198, 72))
@@ -277,7 +340,11 @@ p3p = pygame.image.load(p3_test_filename).convert_alpha()
 p4p = pygame.image.load(p4_test_filename).convert_alpha()
 # start界面图像预载
 start_bg = pygame.image.load(startbg).convert_alpha()
-
+# 特殊方块的贴图
+start_block = pygame.image.load(start_block_filename).convert_alpha()
+jianyu_block = pygame.image.load(jianyu_block_filename).convert_alpha()
+# 对话框图片预载
+forword = pygame.image.load(forword_filename).convert_alpha()
 
 # 给画面添加图片元素
 # 添加背景图片
@@ -318,9 +385,12 @@ screen.sc_add(left_pink_block, (262, 480))  # 显示24处块
 screen.sc_add(left_green_block, (262, 378))  # 显示25处块
 screen.sc_add(left_green_block, (262, 276))  # 显示26处块
 screen.sc_add(left_lightblue_block, (262, 174))  # 显示27处块
+screen.sc_add(start_block, (262,0)) # 0号方块的贴图
+screen.sc_add(jianyu_block, (1152, 684)) # 14号块的贴图
+# screen.sc_add(forword, (500, 470)) # 对话框
 
 pygame.mouse.set_visible(False)
-n = 0
+n = 0  # 阶段标记数
 pygame.init()
 # 建立游戏开始界面的循环
 # 由于流程比较简单 所以用面向过程的方式来解决
@@ -367,7 +437,9 @@ pygame.init()
 screen.sc_set()
 tou = Tou()
 # 单人游戏模式下的实例
-p1 = Player('test',0)
+p1 = Player('test', 0)
+p2 = Player('test2', 2)
+
 
 # 建立游戏单机模式主体循环
 pygame.display.set_caption('大富翁----【单人模式】')
@@ -384,11 +456,22 @@ while n == 2:
                 button.disappear()
             if event.key == pygame.K_SPACE:
                 button.newset()
-        if event.type == MOUSEBUTTONDOWN and button.flag == 1:
+            if event.key == K_d:
+                dialogbox.show_buy()
+            if event.key == K_b:
+                dialogbox.show_build()
+            if event.key == K_a:
+                dialogbox.disappear()
+            if event.key == K_n:
+                button.show_tou()
+            if event.key == K_m:
+                button.tou_disappear()
+
+        if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
             if button_toutouzi.collidepoint(mouse.x,mouse.y):
-                print(0)
+                # print(0)
                 st = time.clock()
-                print(st)
+                # print(st)
                 tou.show()
                 dice = random.randint(1, 6)
                 tou.showend_flag = 1
@@ -399,10 +482,16 @@ while n == 2:
     if 6.5 < time.clock() - st and move == 1:
         p1.move(dice)
         move = 0
+
+
     tou.setself()
     screen.sc_show()
     mouse.get_mouse()
-    button.show()
+    button.show_button()
+    button.tou()
+    dialogbox.ifbuy()
+    dialogbox.ifbuild()
+
     if tou.show_flag == 1:
         tou.group.draw(screen.screen)
     if tou.showend_flag == 1 and 5 < time.clock() - st < 6.5:
@@ -410,6 +499,7 @@ while n == 2:
     # 显示block上的文字名称
 
     p1.show_player(screen.screen, testplayer)
+    p2.show_player(screen.screen, testplayer)
     word.show()
     mouse.show()
     screen.sc_update()
@@ -417,21 +507,22 @@ while n == 2:
 # 多人模式的游戏循环
 # 创建实例
 
-pygame.display.set_caption('大富翁----【多人游戏】')
-while n == 3:
-
-    for event in pygame.event.get():  # pygame模块自带的事件捕捉
-        if event.type == QUIT:  # 发生点击右上角退出的事件
-            exit()
-        if event.type == KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                button.disappear()
-            if event.key == pygame.K_SPACE:
-                button.newset()
-
-    screen.sc_show()
-    mouse.get_mouse()
-    button.show()
-    mouse.show()
-
-    screen.sc_update()
+# pygame.display.set_caption('大富翁----【多人游戏】')
+# while n == 3:
+#
+#     for event in pygame.event.get():  # pygame模块自带的事件捕捉
+#         if event.type == QUIT:  # 发生点击右上角退出的事件
+#             exit()
+#         if event.type == KEYDOWN:
+#             if event.key == pygame.K_ESCAPE:
+#                 button.disappear()
+#             if event.key == pygame.K_SPACE:
+#                 button.newset()
+#
+#     screen.sc_show()
+#     mouse.get_mouse()
+#     button.show_button()
+#     button.show_tou()
+#     mouse.show()
+#
+#     screen.sc_update()
