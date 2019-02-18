@@ -14,7 +14,7 @@ def is_my_turn(pp):
 
 
 
-#
+
 # # 掷骰子操作
 # def tou():
 #     return random.randint(1,6)

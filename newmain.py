@@ -8,7 +8,8 @@ from words import *
 from toutouzi import *
 from player import *
 from blockdata import *
-from player_turn import *
+
+
 
 # 文件名导入
 title_icon_filename = 'image/titles.ico'
@@ -123,6 +124,7 @@ class Button:
 
             screen.screen.blit(self.word_yes, (595, 634))
             screen.screen.blit(self.word_no, (945, 634))
+
     def tou(self):
         if self.touflag == 1:
             screen.screen.blit(button_tou, (750, 600))  # 显示投骰子按钮
@@ -135,6 +137,18 @@ class Button:
 
     def disappear(self):
         self.flag = 0
+
+    def yes_or_no(self):
+        self.flag = 1
+        if event.type == MOUSEBUTTONDOWN and button.flag == 1:
+            if button_yes.collidepoint(mouse.x, mouse.y):
+                self.flag = 0
+                print('yes')
+                return True
+            if button_no.collidepoint(mouse.x, mouse.y):
+                self.flag = 0
+                print('no')
+                return False
 
 
 # 创建投骰子和人物移动的相关动作类
@@ -151,9 +165,9 @@ class Tou:
 
     def setself(self):
         self.st = time.clock()
-        self.framerate.tick(100)
+        self.framerate.tick(60)
         self.ticks = pygame.time.get_ticks()
-        self.group.update(self.ticks, 150)
+        self.group.update(self.ticks, 120)
 
     def show(self):
         self.show_flag = 1
@@ -235,12 +249,10 @@ class DialogBox:
         self.showbuy = 0
         self.showbuild = 0
 
-
     def ifbuy(self):
         if self.showbuy == 1:
             screen.screen.blit(self.forbuy, (530, 500))
             screen.screen.blit(forword, (500, 470))
-
 
     def ifbuild(self):
         if self.showbuild == 1:
@@ -263,14 +275,146 @@ class DialogBox:
 class Info:
     def __init__(self):
         pass
+
     def t_show(self):
         screen.screen.blit(p1t, (8, 8))
-        screen.screen.blit(p2t, (8, 688))
-        screen.screen.blit(p3t, (1454, 8))
+        screen.screen.blit(p2t, (1454, 8))
+        screen.screen.blit(p3t, (8, 688))
         screen.screen.blit(p4t, (1454, 688))
 
+    def p1_info(self):
+        name = make_words(pygame, p1.name, 28)
+        screen.screen.blit(name, (50, 133))
+        money = make_words(pygame, '资金:' + str(p1.money), 26)
+        screen.screen.blit(money, (46, 218))
 
+    def p2_info(self):
+        name = make_words(pygame, p2.name, 28)
+        screen.screen.blit(name, (1486, 133))
+        money = make_words(pygame, '资金:' + str(p2.money), 26)
+        screen.screen.blit(money, (1420, 218))
+
+    def p3_info(self):
+        name = make_words(pygame, p3.name, 28)
+        screen.screen.blit(name, (46, 815))
+        money = make_words(pygame, '资金:' + str(p3.money), 26)
+        screen.screen.blit(money, (44, 615))
+
+    def p4_info(self):
+        name = make_words(pygame, p4.name, 28)
+        screen.screen.blit(name, (1486, 815))
+        money = make_words(pygame, '资金:' + str(p4.money), 26)
+        screen.screen.blit(money, (1420, 615))
+
+    def player_info_show(self):
+        self.p1_info()
+        self.p2_info()
+        self.p3_info()
+        self.p4_info()
+# 全局用 nn  表示回合内阶段
+nn = 0  # 用以区分阶段
 # 定义的全局函数
+def turn():
+    global player, nn
+    print(player.name)
+    block = player.block
+    if block.num in [0,8,14,22]:
+        turn_end()
+    if nn == 0:  # 0代表还未投骰子阶段
+        button.show_tou()
+    if nn == 1:
+        if block.belong == 0:
+            if player.money >= block.price:
+                button.newset()
+                dialogbox.show_buy()
+                if button.yes_or_no() is True:
+                    button.disappear()
+                    dialogbox.disappear()
+                    nn += 1
+                    player.money -= block.price
+                    print(1)
+                    block.belong = player.num
+                if button.yes_or_no() is False:
+                    button.disappear()
+                    dialogbox.disappear()
+                    nn += 1
+        elif block.belong == player.num:
+            if block.buildlevel == 3:
+                nn += 1
+            if block.buildlevel < 3:
+                if player.money >= block.buildmoney:
+                    button.newset()
+                    if button.yes_or_no() is True:
+                        button.disappear()
+                        player.money -= block.buildmoney
+                        block.buildlevel += 1
+                        nn += 1
+                    if button.yes_or_no() is False:
+                        button.disappear()
+                        nn += 1
+                else:
+                    nn += 1
+        else:
+            if player.money >= block.passmoney:
+                player.money -= block.passmoney
+                exec('p'+str(block.belong)+'.money+=block.passmoney')
+                nn += 1
+            else:
+                exec('p'+str(block.belong)+'.money+=player.money')
+                player.pc()
+                players.remove(player)
+                nn += 1
+    if nn == 2:
+        if len(players) == 1:
+            print(players[0].name + '---winner')
+
+        else:
+            nn -= 2
+            turn_end()
+
+
+
+
+
+
+
+# 回合结束函数
+def turn_end():
+    global player
+    if players.index(player) <= 2:
+        player = players[players.index(player) + 1]
+        return
+    else:
+        player = players[0]
+        return
+
+
+# buy_block 购买土地函数
+def buy_block(player,block):
+    player.money -= block.price
+    block.belong = player.num
+
+
+# build_block 土地建筑函数
+def build_block(player, block):
+    block.buildlevel += 1
+    player.money -= block.buildmoney
+
+
+# pay_passmoney 支付过路费函数
+def pay_passmoney(player,block):
+    player.money -= block.passmoney
+    exec('p'+str(block.belong)+'.money+=block.passmoney')
+
+
+# payd_passmoney  现金不够支付过路费时,清算破产
+def payd_passmoney(player,block):
+    exec('p' + str(block.belong) + '.money+=player.money')
+    players.remove(eval('p' + str(block.belong)))
+
+
+# 游戏的回合显示逻辑函数
+
 # 创建屏幕对象实例
 screen = Myscreen()
 # 创建鼠标对象实例
@@ -460,25 +604,15 @@ pygame.init()
 screen.sc_set()
 tou = Tou()
 # 单人游戏模式下的实例
-p1 = Player('test', 0,p1p)
-p2 = Player('test2', 2, p2p)
-p3 = Player('test3', 4, p3p)
-p4 = Player('test4', 6, p4p)
+p1 = Player('test', 10000, 0, p1p)
+p2 = Player('test2', 10000, 2, p2p)
+p3 = Player('test3', 10000, 4, p3p)
+p4 = Player('test4', 10000, 6, p4p)
 # 创建信息框实例
 info = Info()
 # 建立人物循环
 player = p1
-players = [p1,p2,p3,p4]
-def turn_end():
-    global player
-    if players.index(player) <= 2:
-        player = players[players.index(player) + 1]
-        return player
-    else:
-        player = players[0]
-        return player
-
-
+players = [p1, p2, p3, p4]
 
 
 # 建立游戏单机模式主体循环
@@ -486,7 +620,9 @@ pygame.display.set_caption('大富翁----【单人模式】')
 # 循环外部变量
 tou.show_flag = 0
 move = 0
+
 while n == 2:
+
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
@@ -510,6 +646,7 @@ while n == 2:
         if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
             if button_toutouzi.collidepoint(mouse.x,mouse.y):
                 button.touflag = 0
+                nn += 1
                 # print(0)
                 st = time.clock()
                 # print(st)
@@ -517,15 +654,8 @@ while n == 2:
                 dice = random.randint(1, 6)
                 tou.showend_flag = 1
                 move = 1
-                turn_end()
 
-
-    if time.clock() - st > 5:
-        tou.disappear()
-    if 6.5 < time.clock() - st and move == 1:
-        player.move(dice)
-        move = 0
-
+    turn()
 
     tou.setself()
     screen.sc_show()
@@ -539,6 +669,13 @@ while n == 2:
         tou.group.draw(screen.screen)
     if tou.showend_flag == 1 and 5 < time.clock() - st < 6.5:
         eval('screen.screen.blit(tou' + str(dice) + ',(720,225))')
+    if time.clock() - st > 5:
+        tou.disappear()
+    if 6.5 < time.clock() - st and move == 1:
+        player.move(dice)
+        move = 0
+
+
     # 显示block上的文字名称
 
     p1.show_player(screen.screen)
@@ -546,7 +683,10 @@ while n == 2:
     p3.show_player(screen.screen)
     p4.show_player(screen.screen)
     word.show()
+
     info.t_show()
+    info.player_info_show()
+
     mouse.show()
     screen.sc_update()
 
