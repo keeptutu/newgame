@@ -311,6 +311,8 @@ class Info:
         self.p2_info()
         self.p3_info()
         self.p4_info()
+
+
 # 全局用 nn  表示回合内阶段
 nn = 0  # 用以区分阶段
 # 定义的全局函数
@@ -318,11 +320,15 @@ def turn():
     global player, nn
     print(player.name)
     block = player.block
-    if block.num in [0,8,14,22]:
-        turn_end()
+
     if nn == 0:  # 0代表还未投骰子阶段
         button.show_tou()
     if nn == 1:
+        if block.num in [0, 8, 14, 22]:
+            turn_end()
+            nn += 1
+    if nn == 2:
+
         if block.belong == 0:
             if player.money >= block.price:
                 button.newset()
@@ -364,18 +370,14 @@ def turn():
                 player.pc()
                 players.remove(player)
                 nn += 1
-    if nn == 2:
+
+    if nn == 3:
         if len(players) == 1:
             print(players[0].name + '---winner')
 
         else:
-            nn -= 2
+            nn -= 3
             turn_end()
-
-
-
-
-
 
 
 # 回合结束函数

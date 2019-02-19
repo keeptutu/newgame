@@ -1,20 +1,17 @@
 from blockdata import *
 class Player():
-    def __init__(self, name,money,num,img,pp=0):
+    def __init__(self, name,money,num,img,pp):
         self.name = name
         self.money = money
         self.pos = 0
         exec('self.block=block'+str(self.pos))
         self.num = num
         self.img = img
-        self.pp = pp
+        self.belong = pp
 
     def pc(self):
         print(self.name+'---out')
 
-
-    def buy_block(self):
-        pass
 
     def show_player(self, screen):
         xy = (262, 0)
@@ -74,7 +71,7 @@ class Player():
             xy = (262, 276)
         elif self.pos == 27:
             xy = (262, 174)
-
+        exec('self.block=block'+str(self.pos))
         screen.blit(self.img, xy)
 
     def move(self, n):
