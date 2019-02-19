@@ -1,13 +1,14 @@
 from blockdata import *
 class Player():
-    def __init__(self, name,money,num,img,pp):
+    def __init__(self, name,money,num,img,belong,mode='npc'):
         self.name = name
         self.money = money
         self.pos = 0
         exec('self.block=block'+str(self.pos))
         self.num = num
         self.img = img
-        self.belong = pp
+        self.belong = belong
+        self.mode = mode
 
     def pc(self):
         print(self.name+'---out')
@@ -71,13 +72,14 @@ class Player():
             xy = (262, 276)
         elif self.pos == 27:
             xy = (262, 174)
-        exec('self.block=block'+str(self.pos))
+        if self.pos <= 27:
+            exec('self.block=block'+str(self.pos))
         screen.blit(self.img, xy)
 
     def move(self, n):
         for i in range(n):
             if self.pos > 27:
-                self.pos -= 26
+                self.pos -= 27
             else:
                 self.pos += 1
 

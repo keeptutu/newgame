@@ -628,7 +628,7 @@ tou.show_flag = 0
 move = 0
 
 while n == 2:
-
+    print(player.name)
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
@@ -648,18 +648,22 @@ while n == 2:
                 button.show_tou()
             if event.key == K_m:
                 button.tou_disappear()
-
+        ss = 0
         if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
-            if button_toutouzi.collidepoint(mouse.x,mouse.y):
-                button.touflag = 0
-                nn += 1
-                # print(0)
-                st = time.clock()
-                # print(st)
-                tou.show()
-                dice = random.randint(1, 6)
-                tou.showend_flag = 1
-                move = 1
+            if button_toutouzi.collidepoint(mouse.x,mouse.y) :
+                ss = 1
+        if player.mode == 'npc':
+            ss = 1
+        if ss == 1  :
+            button.touflag = 0
+            nn += 1
+            # print(0)
+            st = time.clock()
+            # print(st)
+            tou.show()
+            dice = random.randint(1, 6)
+            tou.showend_flag = 1
+            move = 1
 
     if nn == 0:
         button.show_tou()

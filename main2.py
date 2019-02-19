@@ -610,10 +610,10 @@ pygame.init()
 screen.sc_set()
 tou = Tou()
 # 单人游戏模式下的实例
-p1 = Player('test', 100000, 0, p1p,1,mode='human')
-p2 = Player('test2', 100000, 2, p2p,2)
-p3 = Player('test3', 100000, 4, p3p,3)
-p4 = Player('test4', 100000, 6, p4p,4)
+p1 = Player('test', 100000, 0, p1p, 1, mode='human')
+p2 = Player('test2', 100000, 2, p2p, 2)
+p3 = Player('test3', 100000, 4, p3p, 3, mode='human')
+p4 = Player('test4', 100000, 6, p4p, 4, mode='human')
 # 创建信息框实例
 info = Info()
 # 建立人物循环
@@ -628,7 +628,7 @@ tou.show_flag = 0
 move = 0
 
 while n == 2:
-
+    print(player.name)
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
@@ -648,87 +648,160 @@ while n == 2:
                 button.show_tou()
             if event.key == K_m:
                 button.tou_disappear()
-
+        ss = 0
         if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
             if button_toutouzi.collidepoint(mouse.x,mouse.y):
-                button.touflag = 0
-                nn += 1
-                # print(0)
-                st = time.clock()
-                # print(st)
-                tou.show()
-                dice = random.randint(1, 6)
-                tou.showend_flag = 1
-                move = 1
-
-    if nn == 0:
-        button.show_tou()
-    if nn == 2:
-        if player.pos in [0,8,14,22]:
-            nn += 3
-        else:
+                ss = 1
+        if player.mode == 'npc':
+            ss = 1
+        if ss == 1:
+            button.touflag = 0
             nn += 1
-    if nn == 3:
-        dialogbox.disappear()
-        button.disappear()
-        nn += 1
-    if nn == 4:
-        block = player.block
-        print(block.num)
-        print(player.pos)
-        if block.belong == 0:
-            if player.money >= block.price:
-                button.newset()
-                dialogbox.show_buy()
-                a2 = button.yes_or_no()
-                if a2 is True:
-                    a2 = 0
-                    dialogbox.disappear()
+            # print(0)
+            st = time.clock()
+            # print(st)
+            tou.show()
+            dice = random.randint(1, 6)
+            tou.showend_flag = 1
+            move = 1
+            ss = 0
+    if player.mode == 'human':
+        if nn == 0:
+            button.show_tou()
+        if nn == 2:
+            if player.pos in [0,8,14,22]:
+                nn += 3
+            else:
+                nn += 1
+        if nn == 3:
+            dialogbox.disappear()
+            button.disappear()
+            nn += 1
+        if nn == 4:
+            block = player.block
+            print(block.num)
+            print(player.pos)
+            if block.belong == 0:
+                if player.money >= block.price:
+                    button.newset()
+                    dialogbox.show_buy()
+                    a2 = button.yes_or_no()
+                    if a2 is True :
+                        a2 = 0
+                        dialogbox.disappear()
+                        player.money -= block.price
+                        block.belong = player.belong
+                        print(block.belong)
+                        nn += 1
+                    if a2 is False:
+                        a2 = 0
+                        dialogbox.disappear()
+                        print(block.belong)
+                        nn += 1
+                else:
+                    nn += 1
+            elif block.belong == player.belong:
+                if block.buildlevel < 3:
+                    if player.money >= block.buildmoney:
+                        button.newset()
+                        dialogbox.show_build()
+                        a3 = button.yes_or_no()
+                        if a3 is True:
+                            button.disappear()
+                            dialogbox.disappear()
+                            player.money -= block.buildmoney
+                            block.buildlevel += 1
+                            nn += 1
+                        if a3 is False:
+                            button.disappear()
+                            dialogbox.disappear()
+                            nn += 1
+                elif block.buildlevel == 3:
+                    nn += 1
+            else:
+                if player.money >= block.passmoney:
+                    player.money -= block.passmoney
+                    exec('p'+str(block.belong)+'.money+=block.passmoney')
+                    nn += 1
+                else:
+                    exec('p' + str(block.belong) + '.money+=player.money')
+                    print(player.name + '-------------out')
+                    players.remove(player)
+        if nn == 5:
+            if len(players) > 1:
+                turn_end()
+                nn -= 5
+            else:
+                print(players[0].name + '-------win')
+                exit()
+
+    elif player.mode == 'npc':
+        print(123)
+
+        st = 0
+        if nn == 0:
+            st = time.clock()
+            print(234)
+            nn += 1
+            print(nn)
+        if nn == 1:
+            print(time.clock() - st)
+            print(345)
+            button.touflag = 0
+            tou.show()
+            dice = random.randint(1,6)
+            tou.showend_flag = 1
+            move = 1
+            nn += 1
+        if nn == 2:
+            if player.pos in [0, 8, 14, 22]:
+                nn += 3
+            else:
+                nn += 1
+        if nn == 3:
+            dialogbox.disappear()
+            button.disappear()
+            nn += 1
+        if nn == 4:
+            block = player.block
+            if block.belong == 0:
+                if player.money >= block.price:
                     player.money -= block.price
                     block.belong = player.belong
-                    print(block.belong)
+
                     nn += 1
-                if a2 is False:
-                    a2 = 0
-                    dialogbox.disappear()
-                    print(block.belong)
+                else:
                     nn += 1
-            else:
-                nn += 1
-        elif block.belong == player.belong:
-            if block.buildlevel < 3:
-                if player.money >= block.buildmoney:
-                    button.newset()
-                    dialogbox.show_build()
-                    a3 = button.yes_or_no()
-                    if a3 is True:
-                        button.disappear()
-                        dialogbox.disappear()
+            elif block.belong == player.belong:
+                if block.buildlevel < 3:
+                    if player.money >= block.buildmoney:
                         player.money -= block.buildmoney
-                        block.buildlevel += 1
                         nn += 1
-                    if a3 is False:
-                        button.disappear()
-                        dialogbox.disappear()
-                        nn += 1
-            elif block.buildlevel == 3:
-                nn += 1
-        else:
-            if player.money >= block.passmoney:
-                player.money -= block.passmoney
-                exec('p'+str(block.belong)+'.money+=block.passmoney')
-                nn += 1
+                else:
+                    nn += 1
             else:
-                exec('p' + str(block.belong) + '.money+=player.money')
-                print(player.name + '-------------out')
-                players.remove(player)
-    if nn == 5:
-        if len(players) > 1:
-            turn_end()
-            nn -= 5
-        else:
-            print(players[0].name + '-------win')
-            exit()
+                if player.money >= block.passmoney:
+                    player.money -= block.passmoney
+                    exec('p' + str(block.belong) + '.money+=block.passmoney')
+                    nn += 1
+                else:
+                    exec('p' + str(block.belong) + '.money+=player.money')
+                    print(player.name + '-------------out')
+                    players.remove(player)
+                    turn_end()
+        if nn == 5:
+            if len(players) > 1:
+                turn_end()
+
+                nn -= 5
+            else:
+                print(players[0].name + '-------win')
+                exit()
+
+
+
+
+
 
 
 
@@ -770,24 +843,149 @@ while n == 2:
     screen.sc_update()
 
 # 多人模式的游戏循环
-# 创建实例
+# # 创建实例
+# 循环外部变量
+tou.show_flag = 0
+move = 0
 
-# pygame.display.set_caption('大富翁----【多人游戏】')
-# while n == 3:
-#
-#     for event in pygame.event.get():  # pygame模块自带的事件捕捉
-#         if event.type == QUIT:  # 发生点击右上角退出的事件
-#             exit()
-#         if event.type == KEYDOWN:
-#             if event.key == pygame.K_ESCAPE:
-#                 button.disappear()
-#             if event.key == pygame.K_SPACE:
-#                 button.newset()
-#
-#     screen.sc_show()
-#     mouse.get_mouse()
-#     button.show_button()
-#     button.show_tou()
-#     mouse.show()
-#
-#     screen.sc_update()
+pygame.display.set_caption('大富翁----【多人游戏】')
+while n == 3:
+    for event in pygame.event.get():  # pygame模块自带的事件捕捉
+        if event.type == QUIT:  # 发生点击右上角退出的事件
+            exit()
+
+        if event.type == KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                button.disappear()
+            if event.key == pygame.K_SPACE:
+                button.newset()
+            if event.key == K_d:
+                dialogbox.show_buy()
+            if event.key == K_b:
+                dialogbox.show_build()
+            if event.key == K_a:
+                dialogbox.disappear()
+            if event.key == K_n:
+                button.show_tou()
+            if event.key == K_m:
+                button.tou_disappear()
+
+        if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
+            if button_toutouzi.collidepoint(mouse.x,mouse.y):
+                button.touflag = 0
+                nn += 1
+                # print(0)
+                st = time.clock()
+                # print(st)
+                tou.show()
+                dice = random.randint(1, 6)
+                tou.showend_flag = 1
+                move = 1
+    if player.mode == 'human':
+        if nn == 0:
+            button.show_tou()
+        if nn == 2:
+            if player.pos in [0,8,14,22]:
+                nn += 3
+            else:
+                nn += 1
+        if nn == 3:
+            dialogbox.disappear()
+            button.disappear()
+            nn += 1
+        if nn == 4:
+            block = player.block
+            print(block.num)
+            print(player.pos)
+            if block.belong == 0:
+                if player.money >= block.price:
+                    button.newset()
+                    dialogbox.show_buy()
+                    a2 = button.yes_or_no()
+                    if a2 is True :
+                        a2 = 0
+                        dialogbox.disappear()
+                        player.money -= block.price
+                        block.belong = player.belong
+                        print(block.belong)
+                        nn += 1
+                    if a2 is False:
+                        a2 = 0
+                        dialogbox.disappear()
+                        print(block.belong)
+                        nn += 1
+                else:
+                    nn += 1
+            elif block.belong == player.belong:
+                if block.buildlevel < 3:
+                    if player.money >= block.buildmoney:
+                        button.newset()
+                        dialogbox.show_build()
+                        a3 = button.yes_or_no()
+                        if a3 is True:
+                            button.disappear()
+                            dialogbox.disappear()
+                            player.money -= block.buildmoney
+                            block.buildlevel += 1
+                            nn += 1
+                        if a3 is False:
+                            button.disappear()
+                            dialogbox.disappear()
+                            nn += 1
+                elif block.buildlevel == 3:
+                    nn += 1
+            else:
+                if player.money >= block.passmoney:
+                    player.money -= block.passmoney
+                    exec('p'+str(block.belong)+'.money+=block.passmoney')
+                    nn += 1
+                else:
+                    exec('p' + str(block.belong) + '.money+=player.money')
+                    print(player.name + '-------------out')
+                    players.remove(player)
+        if nn == 5:
+            if len(players) > 1:
+                turn_end()
+                nn -= 5
+            else:
+                print(players[0].name + '-------win')
+                exit()
+
+
+
+
+
+    tou.setself()
+    screen.sc_show()
+    mouse.get_mouse()
+    button.show_button()
+    button.tou()
+    dialogbox.ifbuy()
+    dialogbox.ifbuild()
+
+    if tou.show_flag == 1:
+        tou.group.draw(screen.screen)
+    if tou.showend_flag == 1 and 1 < time.clock() - st < 2:
+        eval('screen.screen.blit(tou' + str(dice) + ',(720,225))')
+    if time.clock() - st > 2:
+        tou.disappear()
+    if 2 < time.clock() - st and move == 1:
+        player.move(dice)
+        nn += 1
+
+        move = 0
+
+
+    # 显示block上的文字名称
+
+    p1.show_player(screen.screen)
+    p2.show_player(screen.screen)
+    p3.show_player(screen.screen)
+    p4.show_player(screen.screen)
+    word.show()
+
+    info.t_show()
+    info.player_info_show()
+
+    mouse.show()
+    screen.sc_update()
