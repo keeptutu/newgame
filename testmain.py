@@ -387,6 +387,7 @@ def turn():
 # 回合结束函数
 def turn_end():
     global player
+
     if players.index(player) <= 2:
         player = players[players.index(player) + 1]
         return

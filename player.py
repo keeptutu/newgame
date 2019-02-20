@@ -9,6 +9,10 @@ class Player():
         self.img = img
         self.belong = belong
         self.mode = mode
+        if self.mode == 'npc':
+            self.pp = 0
+        if self.mode == 'human':
+            self.pp = 1
 
     def pc(self):
         print(self.name+'---out')
