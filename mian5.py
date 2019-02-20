@@ -8,7 +8,8 @@ from words import *
 from toutouzi import *
 from player import *
 from blockdata import *
-
+from myserver import *
+from myclicent import *
 
 
 # 文件名导入
@@ -775,9 +776,18 @@ while n == 2:
 
 # 多人模式的游戏循环
 # 创建实例
-
-# pygame.display.set_caption('大富翁----【多人游戏】')
-# while n == 3:
+if n == 3:
+    p1 = Player('test', 100000, 0, p1p, 1, mode='human')
+    p2 = Player('test2', 100000, 2, p2p, 2, mode='human')
+    p3 = Player('test3', 100000, 4, p3p, 3, mode='human')
+    p4 = Player('test4', 100000, 6, p4p, 4, mode='human')
+    # 创建信息框实例
+    info = Info()
+    # 建立人物循环
+    player = p1
+    players = [p1, p2, p3, p4]
+pygame.display.set_caption('大富翁----【多人游戏】')
+while n == 3:
 
     for event in pygame.event.get():  # pygame模块自带的事件捕捉
         if event.type == QUIT:  # 发生点击右上角退出的事件

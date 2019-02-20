@@ -6,7 +6,7 @@ import time
 #socket - tcp - client.py （客户端）：
  
 # 测试，连接本机
-HOST = '127.0.0.1'
+HOST = '118.24.152.10'
 # 设置侦听端口
 PORT = 8555
 BUFSIZ = 1024
