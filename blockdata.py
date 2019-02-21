@@ -23,8 +23,10 @@ class Block:
         self.test = make_words(pygame, self.name, 28)
         self.info_flag = 0
         self.show_passmoney = make_words(pygame, str(self.passmoney), 16)
+
     def uppassmoney(self):
         self.passmoney = self.passmoney + self.buildlevel*(self.buildmoney//2)
+        self.show_passmoney = make_words(pygame, str(self.passmoney), 16)
 
     def show(self):
         print('--------------------------')

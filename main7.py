@@ -1104,8 +1104,6 @@ while n == 3:
                 exec('block'+str(i)+'.make_info()')
                 exec('block'+str(i)+'.info_flag=1')
                 exec('block'+str(i)+'.infoshow(screen)')
-
-
             else:
                 exec('block'+str(i)+'.info_flag=0')
 
@@ -1123,3 +1121,4 @@ while n == 3:
 
     mouse.show()
     screen.sc_update()
+
