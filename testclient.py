@@ -28,11 +28,7 @@ class TcpClient:
         self.trecv.start()
 
     def sendmsg(self):
-        # 循环发送聊天消息，如果socket连接存在则一直循环，发送quit时关闭链接
-        while 1:
-            data = input('send:')
-            if not data:
-                continue
+
             self.client.send(data.encode())
             # print('发送信息：%s' %  data)
             if data.upper() == "QUIT":

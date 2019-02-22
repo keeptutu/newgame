@@ -9,7 +9,7 @@ from toutouzi import *
 from player import *
 from blockdata import *
 
-# from testclient import *
+from testclient import *
 
 
 # 文件名导入
@@ -858,21 +858,6 @@ while n == 3:
         if event.type == QUIT:  # 发生点击右上角退出的事件
             exit()
 
-        if event.type == KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                button.disappear()
-            if event.key == pygame.K_SPACE:
-                button.newset()
-            if event.key == K_d:
-                dialogbox.show_buy()
-            if event.key == K_b:
-                dialogbox.show_build()
-            if event.key == K_a:
-                dialogbox.disappear()
-            if event.key == K_n:
-                button.show_tou()
-            if event.key == K_m:
-                button.tou_disappear()
 
         if event.type == MOUSEBUTTONDOWN and button.touflag == 1:
             if button_toutouzi.collidepoint(mouse.x,mouse.y):
