@@ -855,21 +855,22 @@ if n == 3:
 cli = Myclient()
 nn = 0
 cli.myconn('login')
-
 p = cli.myrecv()
 print(p)
-# if p[0:2] == 'p1':
-#     player = p1
-#     print(player.name)
-# elif p[0:2] == 'p2':
-#     player = p2
-#     print(player.name)
-# elif p[0:2] == 'p3':
-#     player = p3
-#     print(player.name)
-# elif p[0:2] == 'p4':
-#     player = p4
-#     print(player.name)
+if p[0:2] == 'p1':
+    player = p1
+    print(player.name)
+elif p[0:2] == 'p2':
+    player = p2
+    print(player.name)
+elif p[0:2] == 'p3':
+    player = p3
+    print(player.name)
+elif p[0:2] == 'p4':
+    player = p4
+    print(player.name)
+
+
 # while n == 3:
 #     for event in pygame.event.get():
 #         if event.type == QUIT:

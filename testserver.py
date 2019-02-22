@@ -37,7 +37,7 @@ class TcpServer():
         try:
             self.server = socket(AF_INET, SOCK_STREAM)
             print('%d is open' % PORT)
-
+            self.list = []
             self.server.bind(self.ADDR)
             self.server.listen(5)
             # 设置退出条件
@@ -67,6 +67,7 @@ class TcpServer():
             return  # False
 
     def listen_client(self):
+
         while 1:  # not self.STOP_CHAT:
             print(('等待接入，侦听端口:%d' % (PORT)))
             self.tcpClientSock, self.addr = self.server.accept()
@@ -80,6 +81,7 @@ class TcpServer():
             time.sleep(0.5)
 
     def readmsg(self, address):
+
         # 如果地址不存在，则返回False
         if address not in self.clients:
             return False
@@ -89,6 +91,29 @@ class TcpServer():
             try:
                 # 获取到消息内容data
                 data = client.recv(BUFSIZ)
+                if len(self.list) == 0:
+                    self.list.append('p1')
+                    if data.decode() == 'login':
+                        for k in self.clients:
+                            self.clients[k].send('1ok'.encode('utf8'))
+                elif len(self.list) == 1:
+                    self.list.append('p2')
+                    if data.decode() == 'login':
+                        for k in self.clients:
+                            self.clients[k].send('2ok'.encode('utf8'))
+                elif len(self.list) == 2:
+                    self.list.append('p3')
+                    if data.decode() == 'login':
+                        for k in self.clients:
+                            self.clients[k].send('3ok'.encode('utf8'))
+                elif len(self.list) == 3:
+                    self.list.append('p4')
+                    if data.decode() == 'login':
+                        for k in self.clients:
+                            self.clients[k].send('4ok'.encode('utf8'))
+                else:
+                    for k in self.clients:
+                        self.clients[k].sendall('1'.encode())
             except:
                 print(error)
                 self.close_client(address)

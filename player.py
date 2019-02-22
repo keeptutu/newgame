@@ -13,6 +13,8 @@ class Player():
             self.pp = 0
         if self.mode == 'human':
             self.pp = 1
+        self.msg = 0
+        self.dice = 0
 
     def pc(self):
         print(self.name+'---out')
@@ -23,7 +25,7 @@ class Player():
         if self.pos == 0:
             xy = (262 + self.num*10, 0)
         elif self.pos == 1:
-            xy = (438+self.num*2, 0+self.num*2)
+            xy = (438, 0)
         elif self.pos == 2:
             xy = (540, 0)
         elif self.pos == 3:
@@ -84,6 +86,7 @@ class Player():
         for i in range(n):
             if self.pos > 27:
                 self.pos -= 27
+                self.money += 20000
             else:
                 self.pos += 1
 
