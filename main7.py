@@ -779,7 +779,7 @@ while n == 2:
                 else:
                     print('--408')
                     exec('p' + str(block.belong) + '.money+=player.money')
-                    player.money -= block.passmoney
+                    player.money = 0
                     print(player.name + '-------------out')
                     outplayer = player
                     for i in blocks:
@@ -1050,7 +1050,7 @@ while n == 3:
                 else:
                     print('--408')
                     exec('p' + str(block.belong) + '.money+=player.money')
-                    player.money -= block.passmoney
+                    player.money = 0
                     print(player.name + '-------------out')
                     outplayer = player
                     for i in blocks:
